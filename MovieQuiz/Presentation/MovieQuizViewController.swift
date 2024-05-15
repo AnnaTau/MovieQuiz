@@ -7,6 +7,8 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var textLabel: UILabel!
     @IBOutlet private weak var counterLabel: UILabel!
+    @IBOutlet weak var yesButton: UIButton!
+    @IBOutlet weak var noButton: UIButton!
     
     // MARK: - Mocks
     private let questions: [QuizQuestion] = [
@@ -53,19 +55,19 @@ final class MovieQuizViewController: UIViewController {
     ]
     
     // MARK: - Models
-    struct QuizQuestion {
+    private struct QuizQuestion {
         let image: String
         let text: String
         let correctAnswer: Bool
     }
     
-    struct QuizStepViewModel {
+    private struct QuizStepViewModel {
         let image: UIImage
         let question: String
         let questionNumber: String
     }
     
-    struct QuizResultsViewModel {
+    private struct QuizResultsViewModel {
         let title: String
         let text: String
         let buttonText: String
@@ -112,6 +114,8 @@ final class MovieQuizViewController: UIViewController {
         if isCorrect {
             correctAnswers += 1
         }
+        yesButton.isEnabled = false
+        noButton.isEnabled = false
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.showNextQuestionOrResults()
         }
@@ -130,6 +134,8 @@ final class MovieQuizViewController: UIViewController {
             let viewModel = convert(model: nextQuestion)
             show(quiz: viewModel)
         }
+        yesButton.isEnabled = true
+        noButton.isEnabled = true
     }
     
     private func resetLayer() {
