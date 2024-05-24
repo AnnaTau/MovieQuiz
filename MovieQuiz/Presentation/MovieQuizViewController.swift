@@ -76,7 +76,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
             let totalCount = "\(statisticService?.gamesCount ?? 0)"
             let recordTime = statisticService?.bestGame.date.dateTimeString
             let accuracy = String(format: "%.2f", statisticService?.totalAccuracy ?? 0)
-            let text = "Ваш результат: \(correctAnswers)/\(questionsAmount)\nКоличество сыгранных квизов: \(totalCount)\nРекорд: \(currentRecord) (\(recordTime ?? Date().dateTimeString))\nСредняя точность: \(accuracy)%"
+            let text = """
+                Ваш результат: \(correctAnswers)/\(questionsAmount)
+                Количество сыгранных квизов: \(totalCount)
+                Рекорд: \(currentRecord) (\(recordTime ?? Date().dateTimeString))
+                Средняя точность: \(accuracy)%
+                """
             let alertModel = AlertModel(title: "Этот раунд окончен!",
                                         message: text,
                                         buttonText: "Сыграть ещё раз") { [weak self] in
