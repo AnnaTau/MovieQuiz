@@ -102,6 +102,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
                 guard let self = self else { return }
                 self.currentQuestionIndex = 0
                 self.correctAnswers = 0
+                self.questionFactory.clearShownMoviesList()
                 self.questionFactory.requestNextQuestion()
             }
             alertPresenter.show(quiz: alertModel)

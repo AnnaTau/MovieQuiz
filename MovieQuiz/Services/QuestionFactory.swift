@@ -60,6 +60,10 @@ final class QuestionFactory: QuestionFactoryProtocol {
         return movie
     }
     
+    func clearShownMoviesList() {
+        shownMovies.removeAll()
+    }
+    
 //    private let questions: [QuizQuestion] = [
 //        QuizQuestion(
 //            image: "The Godfather",
