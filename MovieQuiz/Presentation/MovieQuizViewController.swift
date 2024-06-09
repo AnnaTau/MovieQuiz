@@ -5,30 +5,36 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
     private let questionsAmount: Int = 10
-    private var questionFactory: QuestionFactoryProtocol?
-    private var alertPresenter: AlertPresenterProtocol?
     private var currentQuestion: QuizQuestion?
-    private var statisticService: StatisticService?
+    private lazy var questionFactory: QuestionFactoryProtocol = {
+        return QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
+    }()
+    private lazy var alertPresenter: AlertPresenterProtocol = {
+        let alertPresenter = AlertPresenter()
+        alertPresenter.delegate = self
+        return alertPresenter
+    }()
+    private lazy var statisticService: StatisticService = {
+        return StatisticServiceImplementation()
+    }()
     
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var textLabel: UILabel!
     @IBOutlet private weak var counterLabel: UILabel!
-    @IBOutlet weak var yesButton: UIButton!
-    @IBOutlet weak var noButton: UIButton!
+    @IBOutlet private weak var yesButton: UIButton!
+    @IBOutlet private weak var noButton: UIButton!
+    @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        let questionFactory = QuestionFactory()
-        questionFactory.delegate = self
-        self.questionFactory = questionFactory
-        questionFactory.requestNextQuestion()
-        statisticService = StatisticServiceImplementation()
+        activityIndicator.startAnimating()
+        questionFactory.loadData()
     }
     
     // MARK: - QuestionFactoryDelegate
     func didReceiveNextQuestion(question: QuizQuestion?) {
-        guard let question = question else {
+        guard let question else {
             return
         }
         currentQuestion = question
@@ -39,9 +45,18 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         }
     }
     
+    func didLoadDataFromServer() {
+        activityIndicator.isHidden = true
+        questionFactory.requestNextQuestion()
+    }
+    
+    func didFailToLoadData(with error: any Error) {
+        showNetworkError(message: error.localizedDescription)
+    }
+    
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         return QuizStepViewModel(
-            image: UIImage(named: model.image) ?? UIImage(),
+            image: UIImage(data: model.image) ?? UIImage(),
             question: model.text,
             questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
     }
@@ -63,23 +78,22 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         }
         yesButton.isEnabled = false
         noButton.isEnabled = false
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
-            guard let self = self else { return }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.showNextQuestionOrResults()
         }
     }
     
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questionsAmount - 1 {
-            statisticService?.store(correct: correctAnswers, total: questionsAmount)
-            let currentRecord = "\(statisticService?.bestGame.correct ?? 0)/\(statisticService?.bestGame.total ?? 10)"
-            let totalCount = "\(statisticService?.gamesCount ?? 0)"
-            let recordTime = statisticService?.bestGame.date.dateTimeString
-            let accuracy = String(format: "%.2f", statisticService?.totalAccuracy ?? 0)
+            statisticService.store(correct: correctAnswers, total: questionsAmount)
+            let currentRecord = "\(statisticService.bestGame.correct)/\(statisticService.bestGame.total)"
+            let totalCount = "\(statisticService.gamesCount)"
+            let recordTime = statisticService.bestGame.date.dateTimeString
+            let accuracy = String(format: "%.2f", statisticService.totalAccuracy)
             let text = """
                 Ваш результат: \(correctAnswers)/\(questionsAmount)
                 Количество сыгранных квизов: \(totalCount)
-                Рекорд: \(currentRecord) (\(recordTime ?? Date().dateTimeString))
+                Рекорд: \(currentRecord) (\(recordTime))
                 Средняя точность: \(accuracy)%
                 """
             let alertModel = AlertModel(title: "Этот раунд окончен!",
@@ -88,15 +102,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
                 guard let self = self else { return }
                 self.currentQuestionIndex = 0
                 self.correctAnswers = 0
-                self.questionFactory?.requestNextQuestion()
+                self.questionFactory.clearShownMoviesList()
+                self.questionFactory.requestNextQuestion()
             }
-            let alertPresenter = AlertPresenter()
-            alertPresenter.delegate = self
-            self.alertPresenter = alertPresenter
             alertPresenter.show(quiz: alertModel)
         } else {
             currentQuestionIndex += 1
-            questionFactory?.requestNextQuestion()
+            questionFactory.requestNextQuestion()
         }
         yesButton.isEnabled = true
         noButton.isEnabled = true
@@ -106,6 +118,20 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 0
         imageView.layer.cornerRadius = 20
+    }
+    
+    private func showNetworkError(message: String) {
+        activityIndicator.stopAnimating()
+        let model = AlertModel(title: "Ошибка",
+                               message: message,
+                               buttonText: "Попробовать еще раз") { [weak self] in
+            guard let self = self else { return }
+            self.currentQuestionIndex = 0
+            self.correctAnswers = 0
+            self.activityIndicator.startAnimating()
+            self.questionFactory.loadData()
+        }
+        alertPresenter.show(quiz: model)
     }
     
     // MARK: - Button actions
