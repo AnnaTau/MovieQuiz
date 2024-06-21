@@ -29,6 +29,7 @@ final class MovieQuizViewController: UIViewController, AlertPresenterDelegate {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        presenter.viewController = self
         activityIndicator.startAnimating()
         questionFactory.loadData()
     }
@@ -41,7 +42,7 @@ final class MovieQuizViewController: UIViewController, AlertPresenterDelegate {
         resetLayer()
     }
     
-    private func showAnswerResult(isCorrect: Bool) {
+    func showAnswerResult(isCorrect: Bool) {
         imageView.layer.masksToBounds = true
         imageView.layer.borderWidth = 8
         imageView.layer.cornerRadius = 20
@@ -110,17 +111,13 @@ final class MovieQuizViewController: UIViewController, AlertPresenterDelegate {
     
     // MARK: - Button actions
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        guard let currentQuestion = currentQuestion else {
-            return
-        }
-        showAnswerResult(isCorrect: currentQuestion.correctAnswer == true)
+        presenter.currentQuestion = currentQuestion
+        presenter.yesButtonClicked()
     }
     
     @IBAction private func noButtonClicked(_ sender: UIButton) {
-        guard let currentQuestion = currentQuestion else {
-            return
-        }
-        showAnswerResult(isCorrect: currentQuestion.correctAnswer == false)
+        presenter.currentQuestion = currentQuestion
+        presenter.noButtonClicked()
     }
 }
 
