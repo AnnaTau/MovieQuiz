@@ -50,6 +50,10 @@ final class QuestionFactory: QuestionFactoryProtocol {
         }
     }
     
+    func clearShownMoviesList() {
+        shownMovies.removeAll()
+    }
+    
     private func getRandomMovie() -> MostPopularMovie? {
         var index: Int
         repeat {
@@ -58,9 +62,5 @@ final class QuestionFactory: QuestionFactoryProtocol {
         shownMovies.append(index)
         guard let movie = self.movies[safe: index] else { return nil }
         return movie
-    }
-    
-    func clearShownMoviesList() {
-        shownMovies.removeAll()
     }
 }
