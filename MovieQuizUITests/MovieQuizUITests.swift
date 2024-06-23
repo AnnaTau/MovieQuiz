@@ -7,7 +7,6 @@ final class MovieQuizUITests: XCTestCase {
         try super.setUpWithError()
         app = XCUIApplication()
         app.launch()
-
         continueAfterFailure = false
     }
 

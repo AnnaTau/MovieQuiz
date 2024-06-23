@@ -10,6 +10,8 @@
 		5D7D68962BE419D700539DA8 /* YS Display-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D7D68952BE419D700539DA8 /* YS Display-Bold.ttf */; };
 		5D7D68982BE419EC00539DA8 /* YS Display-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D7D68972BE419EC00539DA8 /* YS Display-Medium.ttf */; };
 		5D95F00B2C2614850040F071 /* MovieQuizPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D95F00A2C2614850040F071 /* MovieQuizPresenter.swift */; };
+		5D95F00D2C2841D30040F071 /* MovieQuizViewControllerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D95F00C2C2841D20040F071 /* MovieQuizViewControllerProtocol.swift */; };
+		5D95F00F2C2842970040F071 /* MovieQuizViewControllerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D95F00E2C2842970040F071 /* MovieQuizViewControllerMock.swift */; };
 		5D9614BC2C1110760031DBD3 /* NetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9614BB2C1110760031DBD3 /* NetworkClient.swift */; };
 		5D9614BE2C11B6430031DBD3 /* MostPopularMovies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9614BD2C11B6430031DBD3 /* MostPopularMovies.swift */; };
 		5D9614C02C11C9EE0031DBD3 /* MoviesLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D9614BF2C11C9EE0031DBD3 /* MoviesLoader.swift */; };
@@ -60,6 +62,8 @@
 		5D7D68952BE419D700539DA8 /* YS Display-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Bold.ttf"; sourceTree = "<group>"; };
 		5D7D68972BE419EC00539DA8 /* YS Display-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "YS Display-Medium.ttf"; sourceTree = "<group>"; };
 		5D95F00A2C2614850040F071 /* MovieQuizPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieQuizPresenter.swift; sourceTree = "<group>"; };
+		5D95F00C2C2841D20040F071 /* MovieQuizViewControllerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieQuizViewControllerProtocol.swift; sourceTree = "<group>"; };
+		5D95F00E2C2842970040F071 /* MovieQuizViewControllerMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieQuizViewControllerMock.swift; sourceTree = "<group>"; };
 		5D9614BB2C1110760031DBD3 /* NetworkClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkClient.swift; sourceTree = "<group>"; };
 		5D9614BD2C11B6430031DBD3 /* MostPopularMovies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MostPopularMovies.swift; sourceTree = "<group>"; };
 		5D9614BF2C11C9EE0031DBD3 /* MoviesLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesLoader.swift; sourceTree = "<group>"; };
@@ -139,6 +143,7 @@
 			isa = PBXGroup;
 			children = (
 				5D9614D02C1B370B0031DBD3 /* MoviesLoaderTests.swift */,
+				5D95F00E2C2842970040F071 /* MovieQuizViewControllerMock.swift */,
 			);
 			path = MovieQuizTests;
 			sourceTree = "<group>";
@@ -187,6 +192,7 @@
 				5DB5CCF22BF94ED6000CF27A /* AlertPresenterProtocol.swift */,
 				5DB5CCF42BF95020000CF27A /* AlertPresenterDelegate.swift */,
 				5D95F00A2C2614850040F071 /* MovieQuizPresenter.swift */,
+				5D95F00C2C2841D20040F071 /* MovieQuizViewControllerProtocol.swift */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -380,6 +386,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5D95F00F2C2842970040F071 /* MovieQuizViewControllerMock.swift in Sources */,
 				5D9614D12C1B370B0031DBD3 /* MoviesLoaderTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -398,6 +405,7 @@
 			files = (
 				AD5EE5DE284D7887003966EF /* UIColor+Extensions.swift in Sources */,
 				5DB5CCF12BF94301000CF27A /* AlertPresenter.swift in Sources */,
+				5D95F00D2C2841D30040F071 /* MovieQuizViewControllerProtocol.swift in Sources */,
 				5DB5CCF52BF95020000CF27A /* AlertPresenterDelegate.swift in Sources */,
 				5DB5CCEF2BF93C80000CF27A /* AlertModel.swift in Sources */,
 				AD7AFA552836189F00399704 /* Array+Extensions.swift in Sources */,
