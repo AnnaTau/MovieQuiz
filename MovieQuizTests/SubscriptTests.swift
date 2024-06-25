@@ -3,8 +3,7 @@ import XCTest
 final class SubscriptTests: XCTestCase {
     let array = [1, 1, 2, 3, 5]
     func testSubscriptNotNil() throws {
-        guard let e = array[safe: 2] else { return }
-        XCTAssertEqual(e, 2)
+        XCTAssertEqual(array[safe: 2], 2)
     }
     
     func testSubscriptNil() throws {
